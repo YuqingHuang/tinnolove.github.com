@@ -1,0 +1,54 @@
+
+From iOS5, By default, these accessor methods are synthesized automatically for you by the compiler, so you don’t need to do anything other than declare the property using @property in the class interface.
+
+When you’ve written customized getter and setter for a property, you should write @synthesize for this property if you want to use the default ivar of this property.
+
+Eg.
+
+-ivar will work-
+in .h:
+@property (strong, nonatomic) NSString *suit;
+
+in .m:
+- (void)setSuit:(NSString *)suit
+{
+    if ([suit isEqualToString:@"heart"]) {
+            _suit = suit; //fine
+                }
+                
+                }
+
+
+                -ivar will not work, build will fail- 
+                in .h:
+                @property (strong, nonatomic) NSString *suit;
+
+                in .m:
+                - (void)setSuit:(NSString *)suit
+                {
+                    if ([suit isEqualToString:@"heart"]) {
+                            _suit = suit; //will display error here
+                                }
+                                
+                                }
+                                - (NSString *)suit
+                                {
+                                    return _suit; //will display error here
+                                    
+                                    }
+
+
+                                    solution:
+                                    in .m ->
+                                    @synthesize suit = _suit;
+
+
+                                    From apple: https://developer.apple.com/library/ios/documentation/cocoa/conceptual/ProgrammingWithObjectiveC/EncapsulatingData/EncapsulatingData.html 
+
+                                    Note: The compiler will automatically synthesize an instance variable in all situations where it’s also synthesizing at least one accessor method. If you implement both a getter and a setter for a readwrite property, or a getter for a readonly property, the compiler will assume that you are taking control over the property implementation and won’t synthesize an instance variable automatically.
+                                    If you still need an instance variable, you’ll need to request that one be synthesized:
+
+                                    @synthesize property = _property;
+
+
+
